@@ -1,5 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import date
+from typing import Optional
 
 class CardBase(BaseModel):
     holder_name: str
@@ -8,13 +9,13 @@ class CardBase(BaseModel):
     cvv: int
     issuer_id: str
     track: str
-    amount: float | None = 0.00
+    amount: Optional[float] = 0.00
 
 class CardCreate(CardBase):
-    pass          # POST payload – same as CardBase
+    pass  # POST payload – same as CardBase
 
 class CardRead(CardBase):
     id: int
-
-    class Config:
-        orm_mode = True
+    
+    # Fixed Pydantic V2 configuration
+    model_config = ConfigDict(from_attributes=True)
